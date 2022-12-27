@@ -42,15 +42,9 @@ const Login = () => {
   const loginWithUnstoppable = async () => {
     try {
       const authorization = await uauth.loginWithPopup();
-      const domainName = authorization.idToken.sub;
       const walletAddress = authorization.idToken.wallet_address;
-      if (authorization.accessToken) {
-        signInWithGoogle();
-      };
+      signInWithGoogle();
       localStorage.setItem('wallet_addr', walletAddress);
-      console.log(authorization);
-      console.log(domainName);
-      console.log(walletAddress);
     } catch (error) {
       console.log(error);
     }
