@@ -45,7 +45,7 @@ const UploadVideo = () => {
       const data = doc.docs[0].data();
       setName(data.name);
     } catch (error) {
-      toaster.danger("An error occured while fetching user data");
+      toaster.danger("An error occured while fetching user data", { id: 'mess' });
     }
   };
 
@@ -65,7 +65,7 @@ const UploadVideo = () => {
         setProgresspercent(progress);
       },
       (error) => {
-        toaster.danger(error);
+        toaster.danger(error, { id: 'mess' });
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
@@ -91,12 +91,12 @@ const UploadVideo = () => {
         setImgProgressPercent(imgProgress);
       },
       (error) => {
-        toaster.danger(error);
+        toaster.danger(error, { id: 'mess' });
       },
       () => {
         getDownloadURL(uploadImageTask.snapshot.ref).then((downloadURL) => {
           setImgUrl(downloadURL);
-          toaster.success("Image uploaded successfully");
+          toaster.success("Image uploaded successfully", { id: 'mess' });
         });
       }
     );
@@ -128,7 +128,7 @@ const UploadVideo = () => {
         navigate("/success");
       }, 2000);
     } catch (error) {
-      toaster.danger(error);
+      toaster.danger(error, { id: 'mess' });
     }
   }
 

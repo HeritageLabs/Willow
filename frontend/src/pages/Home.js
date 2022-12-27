@@ -26,7 +26,7 @@ const Home = () => {
   const [user, loading] = useAuthState(auth);
   const [name, setName] = useState("");
   const [myTrees, setMyTrees] = useState([]);
-  const [weatherData, setWeatherData] = useState({});
+  // const [weatherData, setWeatherData] = useState({});
   const navigate = useNavigate();
   const userId = Cookies.get("userId");
 
@@ -37,7 +37,7 @@ const Home = () => {
       const data = doc.docs[0].data();
       setName(data.name);
     } catch (error) {
-      toaster.danger("An error occured while fetching user data");
+      toaster.danger("An error occured while fetching user data", { id: 'mess' });
     }
   };
 
@@ -62,24 +62,24 @@ const Home = () => {
     });
   }, []);
 
-  const api = process.env.REACT_APP_IBM_API;
+  // const api = process.env.REACT_APP_IBM_API;
 
-  useEffect(() => {
-    axios
-      .get(
-        api,
-      )
-      .then((res) => {
-        setWeatherData(res?.data);
-      })
-      .catch((err) => toaster.danger(err));
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get(
+  //       api,
+  //     )
+  //     .then((res) => {
+  //       setWeatherData(res?.data);
+  //     })
+  //     .catch((err) => toaster.danger(err, { id: 'mess' }));
+  // }, []);
 
   return (
     <Box>
       <AuthNav />
-      <Box p="20px" w="100%" display="flex" justifyContent="space-between">
-        <Box w="70%">
+      <Box p="20px" w="100%" justifyContent="space-between">
+        <Box>
           <Image
             src={ImageBg}
             borderRadius="8px"
@@ -102,7 +102,7 @@ const Home = () => {
                 Locations
               </Text>
             </Flex>
-            <SimpleGrid columns={3} gap="38">
+            <SimpleGrid columns={4} gap="38">
               {locations.map((location) => (
                 <Box
                   key={location.country}
@@ -154,7 +154,7 @@ const Home = () => {
                 My Trees
               </Text>
             </Flex>
-            <SimpleGrid columns={3} gap="38">
+            <SimpleGrid columns={4} gap="38">
               {myTrees.map((myTree) => (
                 <Box
                   key={myTree.id}
@@ -202,7 +202,7 @@ const Home = () => {
             </SimpleGrid>
           </Box>
         </Box>
-        <WeatherTemp weatherData={weatherData} />
+        {/* <WeatherTemp weatherData={weatherData} /> */}
       </Box>
     </Box>
   );

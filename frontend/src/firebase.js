@@ -19,15 +19,16 @@ import {
   addDoc,
 } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
+import { uauth } from "./utils/methods";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCrHttMmwGWmzOc4Oumxgk7Je9FcCMAFvg",
-  authDomain: "climatefix-1a082.firebaseapp.com",
-  projectId: "climatefix-1a082",
-  storageBucket: "climatefix-1a082.appspot.com",
-  messagingSenderId: "506093732620",
-  appId: "1:506093732620:web:e083261e997545d870ff29",
-  measurementId: "G-6DSXK5RY4Y",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  measurementId: process.env.REACT_APP_MEASUREMENT_ID,
 };
 
 const app = initializeApp(firebaseConfig);
@@ -41,6 +42,7 @@ const signInWithGoogle = async () => {
   try {
     const res = await signInWithPopup(auth, googleProvider);
     const user = res.user;
+    console.log(user.uid);
     const q = query(collection(db, "users"), where("uid", "==", user.uid));
     const docs = await getDocs(q);
     if (docs.docs.length === 0) {
@@ -53,7 +55,7 @@ const signInWithGoogle = async () => {
     }
   } catch (error) {
     console.error(error);
-    toaster.danger(error.message);
+    toaster.danger(error.message, { id: 'mess' });
   }
 };
 
@@ -62,7 +64,7 @@ const logInWithEmailAndPassword = async (email, password) => {
     await signInWithEmailAndPassword(auth, email, password);
   } catch (error) {
     console.error(error);
-    toaster.danger(error.message);
+    toaster.danger(error.message, { id: 'mess' });
   }
 };
 
@@ -85,14 +87,15 @@ const registerWithEmailAndPassword = async (name, email, password) => {
 const sendPasswordReset = async (email) => {
   try {
     await sendPasswordResetEmail(auth, email);
-    toaster.success("Password reset link sent!");
+    toaster.success("Password reset link sent!", { id: 'mess' });
   } catch (error) {
     console.error(error);
-    toaster.danger(error.message);
+    toaster.danger(error.message, { id: 'mess' });
   }
 };
 
-const logout = () => {
+const logout = async () => {
+  await uauth.logout();
   signOut(auth);
 };
 
