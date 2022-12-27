@@ -61,7 +61,7 @@ const AuthNav = () => {
           <Menu>
             <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
               <Text fontWeight="medium" fontSize="14px">
-                {walletAddr.substring(0, 10)}...
+                { `${walletAddr.substring(0, 10)}...` || 'Options'}
               </Text>
             </MenuButton>
             <MenuList>
