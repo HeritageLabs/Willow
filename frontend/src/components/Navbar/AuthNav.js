@@ -77,7 +77,6 @@ const AuthNav = () => {
                   <Text
                     ml="10px"
                     color="dark"
-                    _hover={{ color: "brand.yellow" }}
                     style={{ transition: "all 0.8s ease" }}
                   >
                     Logout
