@@ -65,13 +65,12 @@ const AuthNav = () => {
               </Text>
             </MenuButton>
             <MenuList>
-              <MenuItem>
+              <MenuItem onClick={logout}>
                 <Flex
                   alignItems="center"
                   style={{ transition: "all 0.8s ease" }}
                   cursor="pointer"
                   ml="10px"
-                  onClick={logout}
                 >
                   {logoutIcon}
                   <Text
