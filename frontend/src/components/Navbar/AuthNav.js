@@ -5,8 +5,10 @@ import { logoutIcon } from "../../assets/svgs/svg";
 import { logout } from "../../firebase";
 import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
+import { useCelo } from "@celo/react-celo";
 
 const AuthNav = () => {
+  const { disconnect } = useCelo();
   const walletAddr = localStorage.getItem("wallet_addr");
   return (
     <Flex
@@ -40,6 +42,11 @@ const AuthNav = () => {
           >
             Market Place
           </Text>
+          <a href="/view-plants">
+                <Text style={{ transition: "all 0.8s ease" }} cursor="pointer" _hover={{ color: "brand.yellow" }}>
+                  Claim token
+                </Text>
+              </a>
           {/* <a href="/view-plants">
                 <Text style={{ transition: "all 0.8s ease" }} cursor="pointer" _hover={{ color: "brand.yellow" }}>
                   My Profile
@@ -61,11 +68,11 @@ const AuthNav = () => {
           <Menu>
             <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
               <Text fontWeight="medium" fontSize="14px">
-                { `${walletAddr.substring(0, 10)}...` || 'Settings'}
+                { `${walletAddr?.substring(0, 10)}...` || 'Settings'}
               </Text>
             </MenuButton>
             <MenuList>
-              <MenuItem onClick={logout}>
+              <MenuItem onClick={() => logout(disconnect)}>
                 <Flex
                   alignItems="center"
                   style={{ transition: "all 0.8s ease" }}

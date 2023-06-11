@@ -15,14 +15,26 @@ import SuccessUpload from "../pages/SuccessfulUpload";
 import AllExperts from "../pages/AllExperts";
 import ForgotPassword from "../pages/ForgotPassword";
 import ViewPlants from "../pages/ViewPlants";
+import { CeloProvider, Alfajores } from "@celo/react-celo";
 
 const AppRoute = () => {
 
   return render(
     <BrowserRouter>
      <ChakraProvider theme={theme} resetCSS>
+     <CeloProvider
+                dapp={{
+                  name: "Register your phone number",
+                  description: "This app allows you to register a number with Celo",
+                  url: "https://example.com",
+                  icon: ""
+                }}
+                defaultNetwork={Alfajores.name}
+              >
       <Routes>
-        <Route index path="/" element={<LandingPage />} />
+        <Route index path="/" element={
+        <LandingPage />
+        } />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
         <Route path="/home" element={<Home />} />
@@ -35,6 +47,7 @@ const AppRoute = () => {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/view-plants/:id" element={<ViewPlants />} />
       </Routes>
+              </CeloProvider>
      </ChakraProvider>
     </BrowserRouter>,
     document.getElementById("root")

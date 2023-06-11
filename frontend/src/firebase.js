@@ -42,7 +42,6 @@ const signInWithGoogle = async () => {
   try {
     const res = await signInWithPopup(auth, googleProvider);
     const user = res.user;
-    console.log(user.uid);
     const q = query(collection(db, "users"), where("uid", "==", user.uid));
     const docs = await getDocs(q);
     if (docs.docs.length === 0) {
@@ -65,6 +64,41 @@ const logInWithEmailAndPassword = async (email, password) => {
   } catch (error) {
     console.error(error);
     toaster.danger(error.message, { id: 'mess' });
+  }
+};
+
+const createUser = async (wallet_address) => {
+  try {
+    const res = await createUserWithEmailAndPassword(auth, `${wallet_address}@gmail.com`, wallet_address)
+    const user = res.user;
+    await addDoc(collection(db, "users"), {
+      uid: user.uid,
+      name: wallet_address,
+      authProvider: "google",
+      email: `${wallet_address}@gmail.com`,
+    });
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+const signInWithEmailAndPass = async (wallet_address) => {
+  try {
+    const res = await signInWithEmailAndPassword(auth, `${wallet_address}@gmail.com`, wallet_address);
+    const user = res.user;
+    const q = query(collection(db, "users"), where("uid", "==", user.uid));
+    const docs = await getDocs(q);
+
+    if (docs.docs.length === 0) {
+      await addDoc(collection(db, "users"), {
+        uid: user.uid,
+        name: wallet_address,
+        authProvider: "google",
+        email: user.email,
+      });
+    }
+  } catch (error) {
+    console.error(error);
   }
 };
 
@@ -94,8 +128,9 @@ const sendPasswordReset = async (email) => {
   }
 };
 
-const logout = async () => {
+const logout = async (disconnect) => {
   signOut(auth);
+  await disconnect();
   await uauth.logout();
 };
 
@@ -108,4 +143,6 @@ export {
   logInWithEmailAndPassword,
   sendPasswordReset,
   logout,
+  createUser,
+  signInWithEmailAndPass,
 };

@@ -1,0 +1,17 @@
+import { WebBlsBlindingClient } from './blinding/webBlindingClient'
+
+const blindingClient = new WebBlsBlindingClient(
+  serviceContext.odisPubKey
+)
+await blindingClient.init()
+
+const { obfuscatedIdentifier } = await OdisUtils.Identifier.getObfuscatedIdentifier(
+  phoneNumber,
+  OdisUtils.Identifier.IdentifierPrefix.PHONE_NUMBER,
+  issuerAddress,
+  authSigner,
+  serviceContext,
+  undefined,
+  undefined,
+  blindingClient
+)

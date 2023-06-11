@@ -17,18 +17,19 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toaster } from "evergreen-ui";
-import axios from "axios";
 import Cookies from "js-cookie";
 import { locations } from "../utils/appData";
-import WeatherTemp from "../components/Tamplates/weatherTemp";
+import { RegisterPhoneNumber } from "../components/Modal/RegisterPhoneNumber";
+import RequestDialog from "../components/Modal/RequestDialog";
 
 const Home = () => {
   const [user, loading] = useAuthState(auth);
   const [name, setName] = useState("");
   const [myTrees, setMyTrees] = useState([]);
-  // const [weatherData, setWeatherData] = useState({});
   const navigate = useNavigate();
   const userId = Cookies.get("userId");
+  const [isShown, setIsShown] = useState(false);
+  const walletAddr = localStorage.getItem("wallet_addr");
 
   const fetchUserName = async () => {
     try {
@@ -61,19 +62,6 @@ const Home = () => {
       );
     });
   }, []);
-
-  // const api = process.env.REACT_APP_IBM_API;
-
-  // useEffect(() => {
-  //   axios
-  //     .get(
-  //       api,
-  //     )
-  //     .then((res) => {
-  //       setWeatherData(res?.data);
-  //     })
-  //     .catch((err) => toaster.danger(err, { id: 'mess' }));
-  // }, []);
 
   return (
     <Box>
@@ -202,8 +190,11 @@ const Home = () => {
             </SimpleGrid>
           </Box>
         </Box>
-        {/* <WeatherTemp weatherData={weatherData} /> */}
+
       </Box>
+
+      <RegisterPhoneNumber isShown={isShown} setIsShown={setIsShown} address={walletAddr} />
+      <RequestDialog handleAddNumber={() => setIsShown(true)} />
     </Box>
   );
 };

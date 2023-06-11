@@ -1,6 +1,12 @@
 import { Box, FormLabel, Input } from "@chakra-ui/react";
 
-const TextInput = ({ placeholder, type, label, defaultValue, border, borderColor, color, isReadOnly, onChange, value }) => {
+const TextInput = ({ placeholder, type, label, defaultValue, border, borderColor, color, isReadOnly, onChange, value, pattern, keyDown, disabled }) => {
+  const handleKeyDown = (e) => {
+    if (keyDown) {
+      if (e.which == 32) return e.preventDefault();
+    }
+    return;
+  };
   return (
     <Box>
       <FormLabel color="brand.dark" fontSize="14px" fontWeight="300" mt="20px">
@@ -20,6 +26,9 @@ const TextInput = ({ placeholder, type, label, defaultValue, border, borderColor
         fontSize="14px"
         onChange={onChange}
         value={value}
+        pattern={pattern}
+        onKeyDown={handleKeyDown}
+        disabled={disabled}
       />
     </Box>
   );
