@@ -1,21 +1,63 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Box, Flex, Text } from "@chakra-ui/react"
 import { Dialog, Pane, toaster } from "evergreen-ui"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import TextInput from "../TextInputs/TextInput"
 import CustomButton from "../CustomButton/customButton"
+import { newKit } from "@celo/contractkit";
 import { sendSmsVerificationToken, validatePhoneNumber } from "../../services/twilio";
 import BigNumber from "bignumber.js";
 import { useCelo } from "@celo/react-celo"
-import { registerNumber } from "../SendToNumber/functions"
+import { registerNumber } from "../SendToNumber/functions";
+import { OdisUtils } from "@celo/identity";
+// import { IdentifierPrefix } from "@celo/identity/lib/odis/identifier";
+import {
+  AuthSigner,
+  getServiceContext,
+  OdisContextName,
+} from "@celo/identity/lib/odis/query";
 
 
 export const RegisterPhoneNumber = ({ isShown, setIsShown, address }) => {
+  console.log(OdisUtils, '--> udis');
+  // console.log(OdisContextName, '--> udis //');
   const { initialised, kit, connect, address: userAddress, destroy, network } = useCelo();
+  let [componentInitialized, setComponentInitialized] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [amount, setAmount] = useState('');
   const [activeIndex, setActiveIndex] = useState(0);
   const [invalidInput, setInvalidInput] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
+
+  // console.log(OdisUtils);
+
+  const ISSUER_PRIVATE_KEY = '28ce5b53707480602133b3b09456c7a5be78dcedd0f968d090f310328d1f911b';
+const DEK_PRIVATE_KEY = '0x03e39f532520b1f6e7f6127c12429998d30a12afd35a5ab241559f03c35e96f5a3';
+
+  let issuerKit, issuer, federatedAttestationsContract, odisPaymentContract;
+
+  useEffect(() => {
+    if (initialised) {
+      setComponentInitialized(true);
+    }
+  }, [initialised]);
+
+  useEffect(() => {
+    const intializeIssuer = async () => {
+      issuerKit = newKit(network.rpcUrl);
+      issuer =
+        issuerKit.web3.eth.accounts.privateKeyToAccount(ISSUER_PRIVATE_KEY);
+      issuerKit.addAccount(ISSUER_PRIVATE_KEY);
+      issuerKit.defaultAccount = issuer.address;
+      federatedAttestationsContract =
+        await issuerKit.contracts.getFederatedAttestations();
+        odisPaymentContract = await issuerKit.contracts.getOdisPayments();
+        // console.log(issuerKit, 'issuerKit');
+    };
+    intializeIssuer();
+  });
+
+  // console.log(network);
 
   const handleSendVerifyText = async () => {
     setIsVerifying(true);
@@ -34,12 +76,14 @@ export const RegisterPhoneNumber = ({ isShown, setIsShown, address }) => {
   }
 
   const registerPhone = async () => {
-    await registerNumber(phoneNumber, address, network)
+    setIsVerifying(true);
+    await registerNumber(phoneNumber, address, network, issuerKit, issuer, odisPaymentContract, federatedAttestationsContract)
     .then((res) => {
       console.log(res);
       setActiveIndex(1);
     })
-    .catch((err) => console.log(err));
+    .catch((err) => console.log(err))
+    .finally(() => setIsVerifying(false));
   }
   
   async function handleSend() {

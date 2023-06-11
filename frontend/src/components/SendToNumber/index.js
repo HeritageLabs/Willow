@@ -13,7 +13,7 @@ import {
     getServiceContext,
     OdisContextName,
   } from "@celo/identity/lib/odis/query";
-import WebBlsBlindingClient from "../bls-blinding-client";
+import WebBlsBlindingClient from "../webBlindingClient";
 
 const SendToNumberComp = () => {
     let [componentInitialized, setComponentInitialized] = useState(false);
