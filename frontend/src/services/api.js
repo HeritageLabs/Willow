@@ -10,3 +10,8 @@ const app = axios.create({
 })
 
 export default app;
+
+// export const authSigner: AuthSigner = {
+//     authenticationMethod: OdisUtils.Query.AuthenticationMethod.WALLET_KEY,
+//     contractKit,
+//   };

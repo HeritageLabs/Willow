@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import CustomButton from "../components/CustomButton/customButton";
 import TextInput from "../components/TextInputs/TextInput";
@@ -7,24 +8,27 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useEffect, useState } from "react";
 import {
   auth,
+  createUser,
   logInWithEmailAndPassword,
+  signInWithEmailAndPass,
   signInWithGoogle,
 } from "../firebase";
 import { useNavigate } from "react-router-dom";
-import { Spinner } from "evergreen-ui";
+import { Spinner, toaster } from "evergreen-ui";
 import Cookies from "js-cookie";
 import UnstoppableLogo from "../assets/icons/unstoppable-logo.png";
 import GmailLogo from "../assets/icons/gmail-icon.png";
 import EmailLogo from "../assets/icons/email-icon.png";
 import { uauth } from "../utils/methods";
+import { useCelo } from "@celo/react-celo";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [continueWithEmail, setContinueWithEmail] = useState(false);
-  const [user, loading, error] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   const navigate = useNavigate();
-
+  const { connect, address } = useCelo();
   
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -50,6 +54,20 @@ const Login = () => {
     }
   }
 
+  const handleConnectCelo = async () => {
+    await connect().then((res) => {
+      toaster.success('Connected successfully', { id: 'mess' });
+    })
+    .catch((error) => toaster.danger(error.message, { id: 'mess' }));
+  }
+
+  useEffect(() => {
+    if (address !== null) {
+      user ? signInWithEmailAndPass(address) : createUser(address); signInWithEmailAndPass(address);
+      localStorage.setItem('wallet_addr', address);
+    }
+  }, [address]);
+
   return (
     <Flex w="100%">
       <Box w="55%" className="main-bg" h="100vh">
@@ -65,7 +83,7 @@ const Login = () => {
           <Image src={brandLogo} alt="brand-logo" margin="0 auto" />
         </a>
         <Box mt="70px">
-          <Flex bg="brand.primary" color="white" fontWeight="600" p="10px" alignItems="center" justifyContent="center" borderRadius="8px" cursor="pointer" _hover={{ bg: "brand.green" }} mt="20px" fontSize="14px" onClick={() => setContinueWithEmail(!continueWithEmail)}>
+          <Flex bg="brand.primary" color="white" fontWeight="600" p="10px" alignItems="center" justifyContent="center" borderRadius="8px" cursor="pointer" opacity="0.5" _hover={{ bg: "brand.green" }} mt="20px" fontSize="14px" onClick={() => setContinueWithEmail(!continueWithEmail)}>
             <Image src={EmailLogo} alt="email" w="25px" />
             <Text ml="10px">Continue with Email</Text>
           </Flex>
@@ -80,6 +98,13 @@ const Login = () => {
               <Image cursor="pointer" src={GmailLogo} alit="unstoppable-logo" w="20px" />
             </Flex>
             <Text ml="10px">Login with Google</Text>
+          </Flex>
+
+          <Flex bg="#FCFF51" color="black" fontWeight="600" p="10px" alignItems="center" justifyContent="center" borderRadius="8px" cursor="pointer" _hover={{ bg: "brand.lightGrey" }} mt="30px" boxShadow="rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px" fontSize="14px" onClick={handleConnectCelo}>
+            <Flex ml="12px" borderRadius="50%" w="30px" h="30px" boxShadow="rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px" alignItems="center" justifyContent="center">
+              <Image cursor="pointer" src="https://cryptologos.cc/logos/celo-celo-logo.png" alit="unstoppable-logo" w="20px" />
+            </Flex>
+            <Text ml="10px">Login with Celo</Text>
           </Flex>
 
           {continueWithEmail && 

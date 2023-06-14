@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Button, Flex, Image, Text } from "@chakra-ui/react";
 import { toaster } from "evergreen-ui";
 import brandLogo from "../../assets/icons/brand-logo.svg";
@@ -5,9 +6,26 @@ import { logoutIcon } from "../../assets/svgs/svg";
 import { logout } from "../../firebase";
 import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
+import { useCelo } from "@celo/react-celo";
+import { useEffect, useState } from "react";
+import Web3 from 'web3';
 
 const AuthNav = () => {
+  const { disconnect, address } = useCelo();
   const walletAddr = localStorage.getItem("wallet_addr");
+  const [balance, setBalance] = useState(0);
+
+  useEffect(() => {
+    async function fetchTotalBalance() {
+      const web3 = new Web3("https://alfajores-forno.celo-testnet.org");
+      const balanceInWei = await web3.eth.getBalance(address);
+      const balanceInCelo = web3.utils.fromWei(balanceInWei, "ether");
+      setBalance(Number(balanceInCelo).toFixed(2));
+    }
+
+    fetchTotalBalance();
+  }, []);
+
   return (
     <Flex
       bg="brand.green"
@@ -40,6 +58,11 @@ const AuthNav = () => {
           >
             Market Place
           </Text>
+          <a href="/home">
+                <Text style={{ transition: "all 0.8s ease" }} cursor="pointer" _hover={{ color: "brand.yellow" }}>
+                  Claim token
+                </Text>
+              </a>
           {/* <a href="/view-plants">
                 <Text style={{ transition: "all 0.8s ease" }} cursor="pointer" _hover={{ color: "brand.yellow" }}>
                   My Profile
@@ -55,17 +78,17 @@ const AuthNav = () => {
           _hover={{ color: "brand.yellow" }}
           color="brand.yellow"
         >
-          Earnings: $0.000
+          Earnings: {balance} CELO
         </Text>
         <Flex justifyContent="space-evenly" alignItems="center">
           <Menu>
             <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
               <Text fontWeight="medium" fontSize="14px">
-                { `${walletAddr.substring(0, 10)}...` || 'Settings'}
+                { `${walletAddr?.substring(0, 10)}...` || 'Settings'}
               </Text>
             </MenuButton>
             <MenuList>
-              <MenuItem onClick={logout}>
+              <MenuItem onClick={() => logout(disconnect)}>
                 <Flex
                   alignItems="center"
                   style={{ transition: "all 0.8s ease" }}

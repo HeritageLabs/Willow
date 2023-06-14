@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   Box,
   FormLabel,
@@ -28,13 +29,13 @@ import { useAuthState } from "react-firebase-hooks/auth";
 
 const UploadVideo = () => {
   const navigate = useNavigate();
-  const [user, loading, error] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   const [vidUrl, setVidUrl] = useState(null);
   const [imgurl, setImgUrl] = useState(null);
   const [progresspercent, setProgresspercent] = useState(0);
   const [filePath, setFilePath] = useState("");
   const [imagePath, setImagePath] = useState("");
-  const [name, setName] = useState("");
+  const [setName] = useState("");
   const [myTrees, setMyTrees] = useState([]);
   const [imgProgressPercent, setImgProgressPercent] = useState(0);
 
@@ -45,7 +46,7 @@ const UploadVideo = () => {
       const data = doc.docs[0].data();
       setName(data.name);
     } catch (error) {
-      toaster.danger("An error occured while fetching user data", { id: 'mess' });
+      // toaster("An error occured while fetching user data", { id: 'mess' });
     }
   };
 
@@ -65,7 +66,7 @@ const UploadVideo = () => {
         setProgresspercent(progress);
       },
       (error) => {
-        toaster.danger(error, { id: 'mess' });
+        toaster.danger('Error occured', { id: 'mess' });
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
@@ -91,7 +92,7 @@ const UploadVideo = () => {
         setImgProgressPercent(imgProgress);
       },
       (error) => {
-        toaster.danger(error, { id: 'mess' });
+        toaster.danger('Error occured', { id: 'mess' });
       },
       () => {
         getDownloadURL(uploadImageTask.snapshot.ref).then((downloadURL) => {
@@ -128,7 +129,7 @@ const UploadVideo = () => {
         navigate("/success");
       }, 2000);
     } catch (error) {
-      toaster.danger(error, { id: 'mess' });
+      toaster.danger('Error occured', { id: 'mess' });
     }
   }
 

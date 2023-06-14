@@ -6,10 +6,22 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import "@fontsource/arimo";
 import "@fontsource/poppins";
+import "@celo/react-celo/lib/styles.css";
+import { CeloProvider, Alfajores } from "@celo/react-celo";
 
 ReactDOM.render(
   <BrowserRouter>
+      <CeloProvider
+      dapp={{
+        name: "Register your phone number",
+        description: "This app allows you to register a number with Celo",
+        url: "https://example.com",
+        icon: ""
+      }}
+      defaultNetwork={Alfajores.name}
+    >
     <App />
+    </CeloProvider>
   </BrowserRouter>,
   document.getElementById("root")
 );

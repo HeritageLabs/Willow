@@ -51,7 +51,7 @@ const PlantNow = () => {
         created: Timestamp.now(),
       });
       setLoading(false);
-      navigate('/invite-pending')
+      navigate('/invite-pending');
     } catch (error) {
       toaster.danger(error, { id: 'mess' });
       setLoading(false);
@@ -172,7 +172,7 @@ const PlantNow = () => {
             mx="auto"
             w="40%"
             onClick={handleSubmit}
-            disabled={!region || !tree || !walletAddr}
+            disabled={!region || !tree || !walletAddr || !treeAddr}
             isLoading={loading}
           >
             <Text fontWeight="medium">Proceed</Text>
