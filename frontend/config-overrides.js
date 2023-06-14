@@ -12,6 +12,7 @@ module.exports = function override(config) {
     url: require.resolve("url"),
     zlib: require.resolve("browserify-zlib"),
     querystring: require.resolve("querystring-es3"),
+    util: require.resolve("util.promisify"),
     fs: false,
     net: false,
     "@celo/poprf": false,

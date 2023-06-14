@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import CustomButton from "../components/CustomButton/customButton";
 import TextInput from "../components/TextInputs/TextInput";
@@ -25,12 +26,9 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [continueWithEmail, setContinueWithEmail] = useState(false);
-  const [user, loading, error] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   const navigate = useNavigate();
   const { connect, address } = useCelo();
-
-  console.log(user);
-
   
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -58,13 +56,10 @@ const Login = () => {
 
   const handleConnectCelo = async () => {
     await connect().then((res) => {
-      console.log(res)
       toaster.success('Connected successfully', { id: 'mess' });
     })
     .catch((error) => toaster.danger(error.message, { id: 'mess' }));
   }
-
-  console.log(address);
 
   useEffect(() => {
     if (address !== null) {

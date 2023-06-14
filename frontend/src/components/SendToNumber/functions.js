@@ -1,18 +1,17 @@
 /* eslint-disable no-throw-literal */
 import { BigNumber } from "bignumber.js";
-import { newKit } from "@celo/contractkit";
 import { E164_REGEX } from "../../services/twilio";
 import { OdisUtils } from "@celo/identity";
-// import { IdentifierPrefix } from "@celo/identity/lib";
-import {
-    AuthSigner,
-    getServiceContext,
-    // OdisContextName,
-  } from "@celo/identity/lib/odis/query";
 import { WebBlsBlindingClient } from "../webBlindingClient.ts";
+import { toaster } from "evergreen-ui";
+import { newKitFromWeb3 } from "@celo/contractkit";
+import Web3 from 'web3';
 
-const ISSUER_PRIVATE_KEY = '28ce5b53707480602133b3b09456c7a5be78dcedd0f968d090f310328d1f911b';
-const DEK_PRIVATE_KEY = '0x03e39f532520b1f6e7f6127c12429998d30a12afd35a5ab241559f03c35e96f5a3';
+const ISSUER_PRIVATE_KEY = process.env.REACT_APP_PRIVATE_KEY;
+const DEK_PRIVATE_KEY = process.env.REACT_APP_DATA_ECRYPTIONKEY;
+
+const web3 = new Web3("https://alfajores-forno.celo-testnet.org");
+const kit = newKitFromWeb3(web3);
 
 // let issuerKit,
 // issuer,
@@ -21,22 +20,19 @@ const DEK_PRIVATE_KEY = '0x03e39f532520b1f6e7f6127c12429998d30a12afd35a5ab241559
 
 //   get identifier
 async function getIdentifier(phoneNumber, issuerKit, issuer, odisPaymentContract, network) {
-    try {
-      if (!E164_REGEX.test(phoneNumber)) {
-        throw "Attempting to hash a non-e164 number: " + phoneNumber;
-      }
-      const ONE_CENT_CUSD = issuerKit.web3.utils.toWei("0.01", "ether");
-
-      let authMethod = OdisUtils.Query.AuthenticationMethod.ENCRYPTION_KEY;
-      const authSigner = {
-        authenticationMethod: authMethod,
-        rawKey: DEK_PRIVATE_KEY,
-      };
-
-      const serviceContext = OdisUtils.Query.getServiceContext('Alfajores');
-      
-      console.log(OdisUtils, 'OdisContextName');
-      console.log(serviceContext, 'serviceContext-->');
+  try {
+    if (!E164_REGEX.test(phoneNumber)) {
+      throw "Attempting to hash a non-e164 number: " + phoneNumber;
+    }
+    const ONE_CENT_CUSD = issuerKit.web3.utils.toWei("0.01", "ether");
+    
+    let authMethod = OdisUtils.Query.AuthenticationMethod.ENCRYPTION_KEY;
+    const authSigner = {
+      authenticationMethod: authMethod,
+      rawKey: DEK_PRIVATE_KEY,
+    };
+    
+    const serviceContext = OdisUtils.Query.getServiceContext('Alfajores');
       
       // const serviceContext = getServiceContext(OdisContextName.ALFAJORES);
 
@@ -48,7 +44,6 @@ async function getIdentifier(phoneNumber, issuerKit, issuer, odisPaymentContract
       // );
 
       //increase quota if needed.
-      // console.log("remaining ODIS quota", remainingQuota);
       // if (remainingQuota < 1) {
         // give odis payment contract permission to use cUSD
         const cusd = await issuerKit.contracts.getStableToken();
@@ -62,7 +57,6 @@ async function getIdentifier(phoneNumber, issuerKit, issuer, odisPaymentContract
           const approvalTxReceipt = await cusd
             .increaseAllowance(odisPaymentContract.address, ONE_CENT_CUSD)
             .sendAndWaitForReceipt();
-          console.log("approval status", approvalTxReceipt.status);
           enoughAllowance = approvalTxReceipt.status;
         } else {
           enoughAllowance = true;
@@ -97,14 +91,16 @@ async function getIdentifier(phoneNumber, issuerKit, issuer, odisPaymentContract
       //   undefined,
       //   // blindingClient
       // );
-      const response = await OdisUtils.PhoneNumberIdentifier.getPhoneNumberIdentifier(
-        phoneNumber,
-        issuer.address,
-        authSigner,
-        OdisUtils.Query.getServiceContext('Alfajores')
-      );
+      // const response = await OdisUtils.PhoneNumberIdentifier.getPhoneNumberIdentifier(
+      //   phoneNumber,
+      //   issuer.address,
+      //   authSigner,
+      //   serviceContext,
+      //   undefined,
+      // );
+      // const response = await OdisUtils.
 
-      console.log(response);
+      // console.log(response);
 
       // console.log(phoneNumber,
       //   issuer.address,
@@ -117,7 +113,8 @@ async function getIdentifier(phoneNumber, issuerKit, issuer, odisPaymentContract
       //   `Obfuscated phone number is a result of: sha3('tel://${response.plaintextIdentifier}__${response.pepper}') => ${response.obfuscatedIdentifier}`
       // );
 
-      return response.obfuscatedIdentifier;
+      // return response.obfuscatedIdentifier;
+      toaster.success('Phone number successfully added');
     } catch (error) {
       throw `failed to get identifier: ${error}`;
     }
@@ -154,4 +151,11 @@ export async function registerNumber(number, address, network, issuerKit, issuer
     } catch (error) {
       throw `Error registering phone number: ${error}`;
     }
+  }
+
+  export const getBalance = async (address) => {
+    let cUSDtoken = await kit.contracts.getStableToken();
+    let cUSDBalance = await cUSDtoken.balanceOf(address);
+    const getBalances = cUSDBalance.integerValue();
+    return (Number(getBalances)/1e18).toFixed(2);
   }

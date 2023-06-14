@@ -6,8 +6,8 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import "@fontsource/arimo";
 import "@fontsource/poppins";
-import { CeloProvider, Alfajores } from "@celo/react-celo";
 import "@celo/react-celo/lib/styles.css";
+import { CeloProvider, Alfajores } from "@celo/react-celo";
 
 ReactDOM.render(
   <BrowserRouter>
