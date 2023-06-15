@@ -1,5 +1,4 @@
 {
-  "homepage": "https://willow.github.io",
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
@@ -57,8 +56,6 @@
     "@emotion/styled": "^11.10.5",
     "@fontsource/arimo": "^4.5.10",
     "@fontsource/poppins": "^4.5.10",
-    "predeploy": "yarn run build",
-    "deploy": "gh-pages -b main -d build",
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
