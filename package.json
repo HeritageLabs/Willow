@@ -5,7 +5,6 @@
   "dependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@celo/base": "^4.1.0",
-    "@celo/celocli": "^2.1.0",
     "@celo/contractkit": "^3.1.0",
     "@celo/identity": "1.5.1",
     "@celo/poprf": "^0.1.9",
