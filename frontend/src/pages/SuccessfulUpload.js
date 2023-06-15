@@ -4,7 +4,7 @@ import Congrats from "../assets/images/congrats.png";
 import CustomButton from "../components/CustomButton/customButton";
 import Money from "../assets/icons/money-bag.png";
 import { Dialog, Pane, toaster } from "evergreen-ui";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import TextInput from "../components/TextInputs/TextInput";
 import { useCelo } from "@celo/react-celo";
 import { E164_REGEX } from "../services/twilio";
