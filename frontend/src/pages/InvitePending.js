@@ -6,7 +6,6 @@ import CustomButton from "../components/CustomButton/customButton";
 const InvitePending = () => {
   return (
     <Box>
-      Alice and Bob
       <AuthNav />
       <Box w="100%" textAlign="center">
         <Image src={VerifyIcon} mx="auto" height="300px" alt="verifying-icon" />
