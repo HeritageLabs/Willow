@@ -30,6 +30,7 @@ const Home = () => {
   const userId = Cookies.get("userId");
   const [isShown, setIsShown] = useState(false);
   const walletAddr = localStorage.getItem("wallet_addr");
+  const soulName = localStorage.getItem('soul_name');
 
   const fetchUserName = async () => {
     try {
@@ -78,7 +79,7 @@ const Home = () => {
           />
           <Box mt="20px">
             <Text fontSize="20px" color="brand.orange">
-              Welcome back {name}
+              Welcome back {soulName || name}
             </Text>
           </Box>
 

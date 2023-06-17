@@ -24,7 +24,7 @@ const AppRoute = () => {
      <ChakraProvider theme={theme} resetCSS>
      <CeloProvider
                 dapp={{
-                  name: "Register your phone number",
+                  name: "Willow App",
                   description: "This app allows you to register a number with Celo",
                   url: "https://example.com",
                   icon: ""
