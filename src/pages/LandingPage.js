@@ -28,7 +28,7 @@ const LandingPage = () => {
                                 <CustomButton border="1px solid #FAF9F7" bg="none" color="white" hoverBg="brand.secondary">Learn more</CustomButton>
                             </a>
                             <a href="/signup">
-                                <CustomButton bg="brand.orange" color="white" hoverBg="brand.secondary" m="0 20px">Sign up</CustomButton>
+                                <CustomButton bg="brand.orange" color="white" hoverBg="brand.secondary" m="0 20px">Connect wallet</CustomButton>
                             </a>
                         </Flex>
                     <Flex fontSize="12px" justifyContent="space-around" w="100%" textAlign="center" bottom="0" pos="absolute" p="40px 0">

@@ -35,14 +35,14 @@ const NavBar = () => {
         </Flex>
       </Flex>
       <Flex justifyContent="space-evenly" alignItems="center">
-        <a href="/signup">
+        <a href="/login">
           <CustomButton
             bg="brand.orange"
             hoverBg="brand.yellow"
             hoverColor="brand.green"
             color="brand.white"
           >
-            Sign Up
+            Connect Wallet
           </CustomButton>
         </a>
         <a href="/login">
