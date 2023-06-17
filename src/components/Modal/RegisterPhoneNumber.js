@@ -21,8 +21,6 @@ export const RegisterPhoneNumber = ({ isShown, setIsShown, address }) => {
   const [invalidInput, setInvalidInput] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
 
-  console.log(OdisUtils.Query.getServiceContext('Alfajores'));
-
   const ISSUER_PRIVATE_KEY = process.env.REACT_APP_PRIVATE_KEY;
 
   let issuerKit, issuer, federatedAttestationsContract, odisPaymentContract;

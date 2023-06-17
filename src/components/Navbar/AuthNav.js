@@ -9,11 +9,14 @@ import { ChevronDownIcon } from "@chakra-ui/icons";
 import { useCelo } from "@celo/react-celo";
 import { useEffect, useState } from "react";
 import Web3 from 'web3';
+import { masa } from "../../utils/methods";
 
 const AuthNav = () => {
   const { disconnect, address } = useCelo();
+  const [userSoulName, setUserSoulName] = useState('');
   const walletAddr = localStorage.getItem("wallet_addr");
   const [balance, setBalance] = useState(0);
+
 
   useEffect(() => {
     async function fetchTotalBalance() {
@@ -23,8 +26,30 @@ const AuthNav = () => {
       setBalance(Number(balanceInCelo).toFixed(2));
     }
 
+    async function resolveMasa() {
+      const [soulNames, extension] = await Promise.all([
+        masa.soulName.loadSoulNames(address),
+        masa.contracts.instances.SoulNameContract.extension(),
+        ]);
+  
+    if (soulNames.length > 0) {
+      console.log("Soul names:", "\n");
+      soulNames.forEach((soulName) => {
+        // console.log(`${soulName}${extension}`)
+        setUserSoulName(`${soulName}${extension}`);
+        localStorage.setItem('soul_name', `${soulName}${extension}`);
+      }
+    );
+    } else {
+      console.log(`No soul names for ${address}`);
+    }
+    }
+
     fetchTotalBalance();
+    resolveMasa();
   }, []);
+
+  console.log(userSoulName, '--> soul name');
 
   return (
     <Flex
@@ -58,16 +83,11 @@ const AuthNav = () => {
           >
             Market Place
           </Text>
-          <a href="/home">
+          <a href="https://dev.app.prosperity.global/" target="_blank" rel="noreferrer">
                 <Text style={{ transition: "all 0.8s ease" }} cursor="pointer" _hover={{ color: "brand.yellow" }}>
-                  Claim token
+                  Mint domain
                 </Text>
-              </a>
-          {/* <a href="/view-plants">
-                <Text style={{ transition: "all 0.8s ease" }} cursor="pointer" _hover={{ color: "brand.yellow" }}>
-                  My Profile
-                </Text>
-              </a> */}
+          </a>
         </Flex>
       </Flex>
       <Flex alignItems="center">
@@ -84,7 +104,7 @@ const AuthNav = () => {
           <Menu>
             <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
               <Text fontWeight="medium" fontSize="14px">
-                { `${walletAddr?.substring(0, 10)}...` || 'Settings'}
+                { userSoulName || `${walletAddr?.substring(0, 10)}...` || 'Settings'}
               </Text>
             </MenuButton>
             <MenuList>

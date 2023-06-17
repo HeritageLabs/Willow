@@ -1,4 +1,6 @@
 import UAuth from '@uauth/js';
+import { Masa } from "@masa-finance/masa-sdk";
+import { providers } from "ethers";
 
 export const uauth = new UAuth(
     {
@@ -7,3 +9,11 @@ export const uauth = new UAuth(
         scope: "openid wallet email"
       }
 );
+
+const provider = new providers.Web3Provider(window.ethereum);
+const signer = provider.getSigner();
+
+export const masa = new Masa({
+  signer,
+  networkName: "alfajores",
+});
