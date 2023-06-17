@@ -83,17 +83,17 @@ const Login = () => {
           <Image src={brandLogo} alt="brand-logo" margin="0 auto" />
         </a>
         <Box mt="70px">
-          <Flex bg="brand.primary" color="white" fontWeight="600" p="10px" alignItems="center" justifyContent="center" borderRadius="8px" cursor="pointer" opacity="0.5" _hover={{ bg: "brand.green" }} mt="20px" fontSize="14px" onClick={() => setContinueWithEmail(!continueWithEmail)}>
+          <Flex bg="brand.primary" color="white" fontWeight="600" p="10px" alignItems="center" justifyContent="center" borderRadius="8px" cursor="not-allowed" opacity="0.4" _hover={{ bg: "brand.green" }} mt="20px" fontSize="14px">
             <Image src={EmailLogo} alt="email" w="25px" />
             <Text ml="10px">Continue with Email</Text>
           </Flex>
-          <Flex bg="none" color="black" fontWeight="600" p="10px" alignItems="center" justifyContent="center" borderRadius="8px" cursor="pointer" _hover={{ bg: "brand.lightGrey" }} mt="30px" boxShadow="rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px" fontSize="14px" onClick={loginWithUnstoppable}>
+          <Flex bg="none" color="black" fontWeight="600" p="10px" alignItems="center" justifyContent="center" borderRadius="8px" cursor="not-allowed" _hover={{ bg: "brand.lightGrey" }} mt="30px" boxShadow="rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px" fontSize="14px" opacity="0.4">
             <Flex ml="12px" borderRadius="50%" w="30px" h="30px" boxShadow="rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px" alignItems="center" justifyContent="center">
               <Image cursor="pointer" src={UnstoppableLogo} alit="unstoppable-logo" w="20px" />
             </Flex>
             <Text ml="10px">Login With Unstoppable</Text>
           </Flex>
-          <Flex bg="none" color="black" fontWeight="600" p="10px" alignItems="center" justifyContent="center" borderRadius="8px" cursor="pointer" _hover={{ bg: "brand.lightGrey" }} mt="30px" boxShadow="rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px" fontSize="14px" onClick={signInWithGoogle}>
+          <Flex disabled bg="none" color="black" fontWeight="600" p="10px" alignItems="center" justifyContent="center" borderRadius="8px" cursor="not-allowed" _hover={{ bg: "brand.lightGrey" }} mt="30px" boxShadow="rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px" fontSize="14px" opacity="0.4">
             <Flex ml="12px" borderRadius="50%" w="30px" h="30px" boxShadow="rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px" alignItems="center" justifyContent="center">
               <Image cursor="pointer" src={GmailLogo} alit="unstoppable-logo" w="20px" />
             </Flex>
@@ -104,7 +104,7 @@ const Login = () => {
             <Flex ml="12px" borderRadius="50%" w="30px" h="30px" boxShadow="rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px" alignItems="center" justifyContent="center">
               <Image cursor="pointer" src="https://cryptologos.cc/logos/celo-celo-logo.png" alit="unstoppable-logo" w="20px" />
             </Flex>
-            <Text ml="10px">Login with Celo</Text>
+            <Text ml="10px">Connect with Celo</Text>
           </Flex>
 
           {continueWithEmail && 
