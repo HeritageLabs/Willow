@@ -62,7 +62,7 @@ await tx.waitReceipt();
           hasFooter={false}
         >
           <Box mb="20px">
-            <TextInput placeholder="Enter the code sent to your phone number" label="Verification code" pattern="[0-9]*" type="text" onChange={({ target }) => { setPhoneNumber(target.value); setInvalidInput(false) } } />
+            <TextInput placeholder="e.g. +2348136653463" label="Telephone Number" pattern="[0-9]*" type="text" onChange={({ target }) => { setPhoneNumber(target.value); setInvalidInput(false) } } />
             {invalidInput && (
               <Text fontSize="10px" my="5px" color="red">Please enter a valid tel with your country code!</Text>
             )}
